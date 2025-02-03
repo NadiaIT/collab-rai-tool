@@ -1,0 +1,24 @@
+[project]
+name = "collab-rai-tool"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "Chenyang Yang",email = "773386@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.9,<3.9.7 || >3.9.7"
+dependencies = [
+    "fastapi (>=0.115.8,<0.116.0)",
+    "openai (==0.28)",
+    "torch (>=2.6.0,<3.0.0)",
+    "sentence-transformers (>=3.4.1,<4.0.0)",
+    "uvicorn (>=0.34.0,<0.35.0)",
+    "pandas (>=2.2.3,<3.0.0)",
+    "streamlit (>=1.41.1,<2.0.0)",
+    "streamlit-feedback (>=0.1.4,<0.2.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

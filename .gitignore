@@ -8,3 +8,4 @@ cred.py
 logs
 *.ipynb
 .vscode
+poetry.lock
