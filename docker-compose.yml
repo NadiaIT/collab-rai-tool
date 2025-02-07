@@ -30,9 +30,35 @@ services:
       - pipeline-backend
     environment:
       BACKEND_URL: http://pipeline-backend:8502
+  streamlit-frontend-testing3:
+    build:
+      context: .
+      dockerfile: ./app/frontend_test_version/Dockerfile2
+    ports:
+      - 8506:8506
+    depends_on:
+      - pipeline-backend-baseline
+    environment:
+      BACKEND_URL: http://pipeline-backend-baseline:8505
+  streamlit-frontend-testing4:
+    build:
+      context: .
+      dockerfile: ./app/frontend_test_version2/Dockerfile2
+    ports:
+      - 8507:8507
+    depends_on:
+      - pipeline-backend-baseline
+    environment:
+      BACKEND_URL: http://pipeline-backend-baseline:8505
   pipeline-backend:
     build: 
       context: .
       dockerfile: ./app/backend/Dockerfile
     ports:
       - 8502:8502
+  pipeline-backend-baseline:
+    build:
+      context: .
+      dockerfile: ./app/backend_baseline_version/Dockerfile
+    ports:
+      - 8505:8505
