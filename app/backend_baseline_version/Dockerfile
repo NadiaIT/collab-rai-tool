@@ -9,7 +9,7 @@ COPY ./app/backend_baseline_version/requirements.txt .
 
 RUN pip3 install -r requirements.txt
 
-COPY ./app/backend_baseline_version ./backend
+COPY ./app/backend_baseline_version ./backend_baseline_version
 COPY ./app/helpers ./helpers
 
 EXPOSE 8505

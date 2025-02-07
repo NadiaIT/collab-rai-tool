@@ -33,7 +33,7 @@ services:
   streamlit-frontend-testing3:
     build:
       context: .
-      dockerfile: ./app/frontend_test_version/Dockerfile
+      dockerfile: ./app/frontend_test_version/Dockerfile2
     ports:
       - 8506:8506
     depends_on:
@@ -43,7 +43,7 @@ services:
   streamlit-frontend-testing4:
     build:
       context: .
-      dockerfile: ./app/frontend_test_version2/Dockerfile
+      dockerfile: ./app/frontend_test_version2/Dockerfile2
     ports:
       - 8507:8507
     depends_on:
