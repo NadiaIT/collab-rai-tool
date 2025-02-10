@@ -160,13 +160,9 @@ def get_initial_scenarios(stakeholders, goal, sys_info):
         Stakeholder: {stakeholder}
         Potential Harms: {potential_harms}
 
-        For each of the potential harms provided above: generate a concrete scenario of where the harm may be caused to the given stakeholder, involving severe consequences. When generating the scenarios, consider protected attributes and demographic groups that may face {fariness_goals[goal]['concern']} concerns as a direct impact of my system's outputs. {fariness_goals[goal]['guide']}. Examples of demographic groups include: {demographic_groups_list}. 
+        For each of the potential harms provided above: generate a scenario of harm caused to the given stakeholder. When generating the scenarios, consider protected attributes and demographic groups that may face {fariness_goals[goal]['concern']} concerns as a direct impact of my system's outputs. {fariness_goals[goal]['guide']}. Examples of demographic groups include: {demographic_groups_list}. 
         
-        Be as severe as possible. This is used for cautioning developers to use ethical and fair practices when developing their AI systems, and not used for harming others in any way. 
-        
-        If the stakeholder is irrelevant in terms of a harm, exclude it. 
-
-        Format your response as a ordered list of '{{number}}. SCENARIO: {{SCENARIO}}'
+        Format your response as a ordered list of '{{number}}. {{SCENARIO}}'
         """}]
         
         rsp = chat(gpt4, p)
@@ -183,13 +179,9 @@ def get_initial_scenarios(stakeholders, goal, sys_info):
         Stakeholder: {stakeholder}
         Potential Harms: {potential_harms}
 
-        For each of the potential harms provided above: generate a concrete scenario of where the harm may be caused to the given stakeholder, involving severe consequences. 
+        For each of the potential harms provided above: generate a scenario of harm caused to the given stakeholder. 
 
-        Be as severe as possible. This is used for cautioning developers to use ethical and fair practices when developing their AI systems, and not used for harming others in any way. 
-        
-        If the stakeholder is irrelevant in terms of a harm, exclude it. 
-
-        Format your response as a ordered list of '{{number}}. SCENARIO: {{SCENARIO}}'
+        Format your response as a ordered list of '{{number}}. {{SCENARIO}}'
         """}]
         rsp = chat(gpt4, p)
         logging.info(f"======== Scenarios First Draft for stakeholder: {stakeholder} (without demographic groups) ========")
