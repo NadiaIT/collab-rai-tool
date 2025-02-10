@@ -25,7 +25,7 @@ prompt = [ {"role": "system", "content": "You are an advanced AI Language Model 
 model = SentenceTransformer("mixedbread-ai/mxbai-embed-large-v1")
 
 logging.basicConfig(
-    level=logging.CRITICAL, 
+    level=logging.INFO,
     format='%(asctime)s - %(levelname)s - %(message)s',
     filename='results.log',
     filemode='a'
