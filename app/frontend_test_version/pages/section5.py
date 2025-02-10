@@ -7,6 +7,14 @@ import streamlit as st
 from menu import menu
 import json
 from streamlit_feedback import streamlit_feedback
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='results.log',
+    filemode='a'
+)
 
 st.set_page_config(layout="wide",initial_sidebar_state="expanded")
 
@@ -60,6 +68,12 @@ st.session_state[f'goal_f3_3'] =  st.text_area(":lower_left_ballpoint_pen: **Ins
 st.write(":red[END OF STUDY] - Thank for for participating!")
 
 def convert_json():
+    logging.info("======== After: Harms and Mitigations ========")
+    logging.info(st.session_state[f'goal_f3_2'])
+    logging.info(st.session_state[f'goal_f3_3'])
+    logging.info("======== END OF STUDY ========")
+
+    st.switch_page("pages/section5.py")
     data = {
         "stakeholders": all_stakeholders,
     }

@@ -1,3 +1,5 @@
+import logging
+
 import pandas as pd
 import os, sys, time
 app_dir = os.path.dirname(os.path.dirname(os.path.dirname(__file__)))
@@ -7,6 +9,13 @@ import helper
 import rai_guide
 import streamlit as st
 from menu import menu
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='results.log',
+    filemode='a'
+)
 
 # st.set_page_config(layout="centered",initial_sidebar_state="collapsed")
 
@@ -101,6 +110,9 @@ col1, col2 = st.columns([0.7,0.3])
 with col2:
     if st.button('Next Page', use_container_width=True):
         if len(all_stakeholders) > 0:
+            logging.info("======== Selected Stakeholders ========")
+            logging.info(all_stakeholders)
+            logging.info("======== Moving to Section 3 ========")
             st.switch_page("pages/section4.py")
         else:
             st.toast("Please fill in the stakeholders")

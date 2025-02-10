@@ -5,6 +5,14 @@ sys.path.append(helpers_dir)
 import helper, rai_guide
 import streamlit as st
 from menu import menu
+import logging
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(levelname)s - %(message)s',
+    filename='results.log',
+    filemode='a'
+)
 
 
 st.subheader("Fairness Considerations - Allocation of resources and opportunities")
@@ -43,6 +51,10 @@ st.session_state[f'goal_f2_3'] =  st.text_area(":lower_left_ballpoint_pen: **Ins
 col1, col2 = st.columns([0.7,0.3])
 with col2:
     if st.button('Next Page', use_container_width=True):
+        logging.info("======== Before: Harms and Mitigations ========")
+        logging.info(st.session_state[f'goal_f2_2'])
+        logging.info(st.session_state[f'goal_f2_3'])
+        logging.info("======== Moving to Section 4 ========")
         st.switch_page("pages/section5.py")
 
 menu(st)
