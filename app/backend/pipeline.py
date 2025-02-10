@@ -1,4 +1,4 @@
-import openai
+import litellm
 from sklearn.cluster import KMeans
 import re
 import logging
@@ -15,10 +15,10 @@ import rai_guide
 from cred import KEY 
 import requests
 
-gpt3 = "gpt-3.5-turbo"
-gpt4 = "gpt-4-turbo-preview"
+gpt3 = "gpt-4o-mini"
+gpt4 = "gpt-4o"
 
-openai.api_key = KEY
+litellm.api_key = KEY
 
 prompt = [ {"role": "system", "content": "You are an advanced AI Language Model trained in ethical reasoning and Responsible AI Impact Assessment. Your task is to provide a thorough Responsible AI Impact Assessment analysis of the given situation to the best of your ability.Keep your responses specific to the system I describe."} ]
 
@@ -70,7 +70,7 @@ def chat(model, messages):
     """
     Helper function for sending messages to the OpenAI Chat API.
     """
-    response = openai.ChatCompletion.create( 
+    response = litellm.completion( 
         model=model, 
         messages=messages
     )
@@ -403,6 +403,10 @@ def generate_scenarios(sys_info, goal, given_stakeholders=None, feedback=None):
     """
     Primary function, combining all the steps in the pipeline, to generate scenarios. Directly called by the backend service.
     """
+    print("sys_info", sys_info)
+    print("goal", goal)
+    print("given_stakeholders", given_stakeholders)
+    print("feedback", feedback)
 
     if goal not in ['f1', 'f2', 'f3']: return "Invalid Goal"
 
@@ -448,3 +452,19 @@ def generate_scenarios(sys_info, goal, given_stakeholders=None, feedback=None):
     logging.critical(scenario_heading_list)
 
     return scenario_heading_list, unpicked_scenarios
+
+if __name__ == "__main__":
+    sys_info = "I am building the following AI application. A system that provides movie recommendations to users based on their watching history and ratings data. The system can receive recommendation requests and needs to reply with a list of recommended movies.  The purpose of this system is to suggest movies to users to allow for better user experience. The users (movie watchers) would be able to receive more personalized recommendations. The AI / ML model uses collaborative filtering algorithms to accumulate and learn from users' past evaluations of movies to approximate ratings of unrated movies and then give recommendations based on these estimates. An user story is As a movie watcher, I want to request for personalized recommendations based on my interest and previous watch history, so that I can discover new films that match my preferences and enhance my viewing experience."
+    goal = 'f1'
+    scenarios_selected, scenarios_not_selected = generate_scenarios(sys_info, goal, given_stakeholders=None, feedback=None)
+    # save results
+    with open('scenarios.log', 'w') as f:
+        for (title, scenario) in scenarios_selected:
+            f.write(f"{title}\n")
+            f.write(f"{scenario}\n")
+            f.write("\n")
+        
+        for (title, scenario) in scenarios_not_selected:
+            f.write(f"{title}\n")
+            f.write(f"{scenario}\n")
+        
