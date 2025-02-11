@@ -58,7 +58,7 @@ Prerequisites
 
 Start deploying by running the following command
 ```bash
-$ docker-compose up -d --build --remove-orphans
+$ docker compose up -d --build --remove-orphans
 ```
 
 Note: 
