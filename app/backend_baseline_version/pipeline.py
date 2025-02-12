@@ -168,10 +168,6 @@ def get_initial_scenarios(stakeholders, goal, sys_info):
         rsp = chat(gpt4, p)
         logging.info(f"======== Scenarios First Draft for stakeholder: {stakeholder} ========")
         logging.info(rsp)
-        p.append({'role': 'assistant', 'content': f"{rsp}"})
-        p.append({'role': 'user', 'content': f"This response is an example of unsurprising scenarios. Do not respond with unsurprising scenarios. Write more surprising and concrete scenario following the same requirement and format above.Do not include any corrective measures or suggestions for the tool."})
-        rsp = chat(gpt4, p)
-
         return (rsp, stakeholder)
     
     def draft_without_demographic_groups(stakeholder):
@@ -186,10 +182,6 @@ def get_initial_scenarios(stakeholders, goal, sys_info):
         rsp = chat(gpt4, p)
         logging.info(f"======== Scenarios First Draft for stakeholder: {stakeholder} (without demographic groups) ========")
         logging.info(rsp)
-        p.append({'role': 'assistant', 'content': f"{rsp}"})
-        p.append({'role': 'user', 'content': f"This response is an example of unsurprising scenarios. Do not respond with unsurprising scenarios. Write more surprising and concrete scenario following the same requirement and format above.Do not include any corrective measures or suggestions for the tool."})
-        rsp = chat(gpt4, p)
-
         return (rsp, stakeholder)
 
     scenarios = []
