@@ -1,4 +1,4 @@
-import openai
+import litellm
 from sklearn.cluster import KMeans
 import re
 import logging
@@ -15,10 +15,10 @@ import rai_guide
 from cred import KEY 
 import requests
 
-gpt3 = "gpt-3.5-turbo"
-gpt4 = "gpt-4-turbo-preview"
+gpt3 = "gpt-4o-mini"
+gpt4 = "gpt-4o"
 
-openai.api_key = KEY
+litellm.api_key = KEY
 
 prompt = [ {"role": "system", "content": "You are an advanced AI Language Model trained in ethical reasoning and Responsible AI Impact Assessment. Your task is to provide a thorough Responsible AI Impact Assessment analysis of the given situation to the best of your ability.Keep your responses specific to the system I describe."} ]
 
@@ -70,7 +70,7 @@ def chat(model, messages):
     """
     Helper function for sending messages to the OpenAI Chat API.
     """
-    response = openai.ChatCompletion.create( 
+    response = litellm.completion( 
         model=model, 
         messages=messages
     )
@@ -208,7 +208,7 @@ def get_initial_scenarios(stakeholders, goal, sys_info):
     scenarios_to_process = []
     for (ss, stakeholder) in scenarios:
         for scenario in re.split(r'\D{0,3}\d+\. ', ss):
-            if not "SCENARIO:" in scenario: continue
+            # if not "SCENARIO:" in scenario: continue
             scenarios_to_process.append((scenario, stakeholder))
 
     return scenarios_to_process
