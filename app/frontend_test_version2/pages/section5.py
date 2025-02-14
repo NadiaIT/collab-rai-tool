@@ -5,14 +5,6 @@ sys.path.append(helpers_dir)
 import helper, rai_guide
 import streamlit as st
 from menu import menu
-import logging
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='results.log',
-    filemode='a'
-)
 
 st.subheader("Fairness Considerations - Minimization of stereotyping, demeaning, and erasing outputs")
 
@@ -50,10 +42,11 @@ st.session_state[f'goal_f3_3'] =  st.text_area(":lower_left_ballpoint_pen: **Ins
 col1, col2 = st.columns([0.7,0.3])
 with col2:
     if st.button('Next Page', use_container_width=True):
-        logging.info("======== Before: Harms and Mitigations ========")
-        logging.info(st.session_state[f'goal_f3_2'])
-        logging.info(st.session_state[f'goal_f3_3'])
-        logging.info("======== Moving to Section 4 ========")
+        text = "======== Before: Harms and Mitigations ========\n"\
+               + "Harms: " + st.session_state[f'goal_f3_2'] + "\n"\
+               + "Mitigations: " + st.session_state[f'goal_f3_3'] + "\n"\
+               + "\n======== Moving to Section 4 ========\n"
+        helper.send_log(st, text)
         st.switch_page("pages/section4.py")
 
 menu(st)

@@ -17,6 +17,9 @@ class Data(BaseModel):
     stakeholders: Optional[List[str]] = None
     feedback: Optional[str] = None
 
+class LogInfo(BaseModel):
+    text: str
+
 app = FastAPI()
 results = {}
 
@@ -125,6 +128,14 @@ def logs():
             html_content += f"{line.strip()}<br>"
     html_content += "</pre></body></html>"
     return HTMLResponse(content=html_content)
+
+@app.post("/send-log/")
+async def received_log(log: LogInfo):
+    """
+    Receives the request from frontend to add to logs
+    """
+    print(f"Received logs - {log.text}")
+    pipeline.log_helper(log.text)
 
 @app.get("/start-study/{version}")
 def start_study(version: int):

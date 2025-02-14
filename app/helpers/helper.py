@@ -2,6 +2,7 @@ import requests
 from enum import Enum
 import os, time
 
+
 class Task(Enum):
     DIRECT_SH = 1
     INDIRECT_SH = 2
@@ -10,15 +11,18 @@ class Task(Enum):
     F3 = 5
     MORE_STAKEHOLDERS = 6
 
+
 backend_url = os.getenv('BACKEND_URL', "http://0.0.0.0:8502")
+
 
 def format_scenario_result(scenario, i):
     return f"""
-**Scenario {i+1}: {scenario[0]}**\n
+**Scenario {i + 1}: {scenario[0]}**\n
 {scenario[1]}\n\n
 """
 
-def more_scenarios(st,task_id,task_type):
+
+def more_scenarios(st, task_id, task_type):
     response = requests.get(f"{backend_url}/get-more-scenarios/{task_id}")
     if response.status_code == 200:
         result = response.json()
@@ -27,13 +31,23 @@ def more_scenarios(st,task_id,task_type):
             return result['result']
     return None
 
+
 def send_req(st, sys_info, task_type, stakeholders=None, feedback=None):
-    response = requests.post(f"{backend_url}/pipeline-req",json={"sys_info": sys_info, "task": task_type, "stakeholders": stakeholders, "feedback": feedback})
+    response = requests.post(f"{backend_url}/pipeline-req",
+                             json={"sys_info": sys_info, "task": task_type, "stakeholders": stakeholders,
+                                   "feedback": feedback})
     if response.status_code == 200:
         st.session_state[f'{task_type}_task_id'] = response.json()['task_id']
         st.session_state[f'{task_type}_task_status'] = 'Running'
     else:
         st.error("Failed to start background task")
+
+
+def send_log(st, log):
+    response = requests.post(f"{backend_url}/send-log", json={"text": log})
+    if response.status_code != 200:
+        st.error(f"Failed {response}")
+
 
 def wait_response(st, f_enum):
     if f'{f_enum}_task_status' in st.session_state and st.session_state[f'{f_enum}_task_status'] == 'Running':
@@ -46,11 +60,13 @@ def wait_response(st, f_enum):
                 else:
                     time.sleep(10)
 
+
 def start_study(i):
     requests.get(f"{backend_url}/start-study/{i}")
 
+
 # Polling mechanism
-def poll_task_status(st,task_id, task_type):
+def poll_task_status(st, task_id, task_type):
     response = requests.get(f'{backend_url}/get-result/{task_id}')
     if response.status_code == 200:
         result = response.json()
@@ -58,6 +74,7 @@ def poll_task_status(st,task_id, task_type):
             st.session_state[f'{task_type}_task_status'] = 'Completed'
             return result['result']
     return None
+
 
 def get_stakeholders(st):
     if f'direct_stakeholders' not in st.session_state:
@@ -73,6 +90,7 @@ def get_stakeholders(st):
         indirect_stakeholders = df[df['Indirect Stakeholders'] != '']['Indirect Stakeholders'].tolist()
 
     return list(set(direct_stakeholders + indirect_stakeholders))
+
 
 def potential_harms_hint(st, guide):
     hint = f"""
@@ -113,26 +131,31 @@ def potential_harms_hint(st, guide):
 
     st.markdown(css + hint, unsafe_allow_html=True)
 
+
 def write_scenarios(st, f_enum, st_feedback):
     scenario_heading_list = st.session_state[f'{f_enum}_result']
     for i in range(len(scenario_heading_list)):
-        c1, c2 = st.columns([0.7,0.3])
+        c1, c2 = st.columns([0.7, 0.3])
         with c1:
             st.write(format_scenario_result(scenario_heading_list[i], i))
-            
+
         with c2:
             _, c4 = st.columns([0.9, 0.1])
             with c4:
-                st.markdown("", help="If you did not like a scenario, consider providing feedback to help improve the quality for the regenerated sceanrios.\n - Was the scenario relevant? If not, what information can be added to make it relevant?\n - Were there anything that was misunderstood?\n - Would you like to clarify some information?")
+                st.markdown("",
+                            help="If you did not like a scenario, consider providing feedback to help improve the quality for the regenerated sceanrios.\n - Was the scenario relevant? If not, what information can be added to make it relevant?\n - Were there anything that was misunderstood?\n - Would you like to clarify some information?")
             st_feedback(feedback_type="thumbs", key=f's{i}_thumbs', optional_text_label='Optional explanation')
 
-    st.write(":red[Note: The generated scenarios are only examples of potential harms and fairness issues that could arise from the system's deployment and use. They are potential starting points for considering the fairness implications of the system. We cannot guarantee the accuracy and completeness of the information provided. Please think beyond the generated sceanrios and do not limit your brainstorming of harms to these scenarios.]")
+    st.write(
+        ":red[Note: The generated scenarios are only examples of potential harms and fairness issues that could arise from the system's deployment and use. They are potential starting points for considering the fairness implications of the system. We cannot guarantee the accuracy and completeness of the information provided. Please think beyond the generated sceanrios and do not limit your brainstorming of harms to these scenarios.]")
+
 
 def display_buttons(st, f_enum, sys_info, all_stakeholders):
-    c3, c4 = st.columns([0.5,0.5])
+    c3, c4 = st.columns([0.5, 0.5])
     with c3:
         if f'{f_enum}_result_unpicked' not in st.session_state:
-            more_scenarios_btn = st.button("Show more scenarios", key=f"{f_enum}_more_scenarios",use_container_width=True)
+            more_scenarios_btn = st.button("Show more scenarios", key=f"{f_enum}_more_scenarios",
+                                           use_container_width=True)
             if more_scenarios_btn:
                 result = more_scenarios(st, st.session_state[f'{f_enum}_task_id'], f_enum)
                 if result:
@@ -142,7 +165,8 @@ def display_buttons(st, f_enum, sys_info, all_stakeholders):
                     st.rerun()
     with c4:
         if f'{f_enum}_result' in st.session_state:
-            regenerate_btn = st.button("🔄 Regenerate Scenarios", key=f"{f_enum}_regenerate_btn",use_container_width=True)
+            regenerate_btn = st.button("🔄 Regenerate Scenarios", key=f"{f_enum}_regenerate_btn",
+                                       use_container_width=True)
 
             if regenerate_btn:
                 feedback = ""
@@ -156,6 +180,6 @@ def display_buttons(st, f_enum, sys_info, all_stakeholders):
                     del st.session_state[f'{f_enum}_result_unpicked']
 
                 send_req(st, sys_info, f_enum, all_stakeholders, feedback)
-                print(f"sending regenerate request for f{f_enum-2} with feedback: {feedback}")
+                print(f"sending regenerate request for f{f_enum - 2} with feedback: {feedback}")
                 wait_response(st, f_enum)
                 st.rerun()

@@ -7,14 +7,6 @@ import streamlit as st
 from menu import menu
 import json
 from streamlit_feedback import streamlit_feedback
-import logging
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='results.log',
-    filemode='a'
-)
 
 st.set_page_config(layout="wide",initial_sidebar_state="expanded")
 
@@ -69,16 +61,18 @@ st.session_state[f'goal_f2_3'] =  st.text_area(":lower_left_ballpoint_pen: **Ins
 st.write(":red[END OF STUDY] - Thank for for participating!")
 
 def convert_json():
-    logging.info("======== After: Harms and Mitigations ========")
-    logging.info(st.session_state[f'goal_f2_2'])
-    logging.info(st.session_state[f'goal_f2_3'])
-    logging.info("======== END OF STUDY ========")
     data = {
         "stakeholders": all_stakeholders,
     }
     if f'{f_enum}_result' in st.session_state:
         data["generated_scenarios"] = st.session_state[f'{f_enum}_result']
 
+
+    text = "======== After: Harms and Mitigations ========\n" \
+           + "Harms: " + st.session_state[f'goal_f2_2'] + "\n"\
+           + "Mitigations: " + st.session_state[f'goal_f2_3'] + "\n"\
+           + "\n======== END OF STUDY ========\n"
+    helper.send_log(st, text)
     return json.dumps(data, indent=4)
 
 st.download_button(
