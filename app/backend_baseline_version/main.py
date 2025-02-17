@@ -17,6 +17,9 @@ class Data(BaseModel):
     stakeholders: Optional[List[str]] = None
     feedback: Optional[str] = None
 
+class LogInfo(BaseModel):
+    text: str
+
 app = FastAPI()
 results = {}
 
@@ -137,6 +140,14 @@ def start_study(version: int):
     else: v = "version unknown"
     print(f"Starting new user study - {v}")
     pipeline.log_helper(f"### Starting new user study - {v}\n")
+
+@app.post("/send-log/")
+async def received_log(log: LogInfo):
+    """
+    Receives the request from frontend to add to logs
+    """
+    print(f"Received logs - {log.text}")
+    pipeline.log_helper(log.text)
 
 if __name__ == "__main__":
     uvicorn.run("main:app", host="0.0.0.0", port=8505)

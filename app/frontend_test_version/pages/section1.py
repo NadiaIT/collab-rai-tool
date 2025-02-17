@@ -1,13 +1,8 @@
 import streamlit as st
 from menu import menu
-import logging
+import helper
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='results.log',
-    filemode='a'
-)
+
 
 # st.set_page_config(layout="centered",initial_sidebar_state="collapsed")
 
@@ -44,13 +39,11 @@ col1, col2 = st.columns([0.7,0.3])
 with col2:
     if st.button('Next Page', use_container_width=True):
         if 'us1_des' in st.session_state and st.session_state['us1_des'] != "":
-            logging.info("======== System Description ========")
-            logging.info(st.session_state['system_description'])
-            logging.info("======== System Purpose ========")
-            logging.info(st.session_state['system_purpose'])
-            logging.info("======== User story ========")
-            logging.info(st.session_state['us1_des'])
-            logging.info("======== Moving to Section 2 ========")
+            text = "======== System Description ========\n" + st.session_state['system_description'] + \
+                   "\n======== System Purpose ========\n" + st.session_state['system_purpose'] + \
+                   "\n======== User story ========\n" + st.session_state['us1_des'] + \
+                   "\n======== Moving to Section 2 ========\n"
+            helper.send_log(st, text)
             st.switch_page("pages/section2.py")
         else:
             st.toast("Please fill in an user story first")
