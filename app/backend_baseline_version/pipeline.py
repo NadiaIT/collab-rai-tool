@@ -162,7 +162,7 @@ def get_initial_scenarios(stakeholders, goal, sys_info):
 
         For each of the potential harms provided above: generate a scenario of harm caused to the given stakeholder. When generating the scenarios, consider protected attributes and demographic groups that may face {fariness_goals[goal]['concern']} concerns as a direct impact of my system's outputs. {fariness_goals[goal]['guide']}. Examples of demographic groups include: {demographic_groups_list}. 
         
-        Format your response as a ordered list of '{{number}}. {{SCENARIO}}'
+        Make sure each scenario is around 200 words. Format your response as a ordered list of '{{number}}. SCENARIO: {{SCENARIO}}'
         """}]
         
         rsp = chat(gpt4, p)
@@ -177,7 +177,7 @@ def get_initial_scenarios(stakeholders, goal, sys_info):
 
         For each of the potential harms provided above: generate a scenario of harm caused to the given stakeholder. 
 
-        Format your response as a ordered list of '{{number}}. {{SCENARIO}}'
+        Make sure each scenario is around 200 words. Format your response as a ordered list of '{{number}}. SCENARIO: {{SCENARIO}}'
         """}]
         rsp = chat(gpt4, p)
         logging.info(f"======== Scenarios First Draft for stakeholder: {stakeholder} (without demographic groups) ========")
@@ -185,22 +185,31 @@ def get_initial_scenarios(stakeholders, goal, sys_info):
         return (rsp, stakeholder)
 
     scenarios = []
-    with ThreadPoolExecutor(max_workers=20) as executor:
-        futures = []
-        for stakeholder in stakeholders:
-            futures.append(executor.submit(draft_scenario, stakeholder))
-            futures.append(executor.submit(draft_without_demographic_groups, stakeholder))
 
-        for future in as_completed(futures):
-            try:
-                scenarios.append(future.result())
-            except Exception as e:
-                print(f"An error occurred: {e}")
+    p = scenario_prompts + [{'role': 'user', 'content': f"""Generate three scenarios that causes harm to relevant stakeholders.
+                             
+    The scenarios should be related to the concern of {fariness_goals[goal]['concern']}. That is, {fariness_goals[goal]['guide']} 
+
+    Make sure each scenario is around 175 words. Format your response as a ordered list of '{{number}}. SCENARIO: {{SCENARIO}}'
+    """}]
+    rsp = chat(gpt4, p)
+    scenarios.append((rsp, ""))
+    # with ThreadPoolExecutor(max_workers=20) as executor:
+    #     futures = []
+    #     for stakeholder in stakeholders:
+    #         futures.append(executor.submit(draft_scenario, stakeholder))
+    #         futures.append(executor.submit(draft_without_demographic_groups, stakeholder))
+
+    #     for future in as_completed(futures):
+    #         try:
+    #             scenarios.append(future.result())
+    #         except Exception as e:
+    #             print(f"An error occurred: {e}")
 
     scenarios_to_process = []
     for (ss, stakeholder) in scenarios:
         for scenario in re.split(r'\D{0,3}\d+\. ', ss):
-            # if not "SCENARIO:" in scenario: continue
+            if not "SCENARIO:" in scenario: continue
             scenarios_to_process.append((scenario, stakeholder))
 
     return scenarios_to_process
