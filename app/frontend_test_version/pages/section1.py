@@ -2,8 +2,6 @@ import streamlit as st
 from menu import menu
 import helper
 
-
-
 # st.set_page_config(layout="centered",initial_sidebar_state="collapsed")
 
 st.header("Section 1: System Information")
@@ -19,9 +17,9 @@ with st.expander("If you already have all your system information, you can paste
     with c2:
         if st.button('Go Directly to Next Page', use_container_width=True):
             if 'all_system_info' in st.session_state and st.session_state['all_system_info'] != "":
-                logging.info("======== All System Info ========")
-                logging.info(st.session_state['all_system_info'])
-                logging.info("======== Moving to Section 2 ========")
+                text = "======== All System Info ========\n" + st.session_state['all_system_info'] + \
+                       "\n======== Moving to Section 2 ========\n"
+                helper.send_log(st, text)
                 st.switch_page("pages/section2.py")
             else:
                 st.toast("Please fill in your system information first")
