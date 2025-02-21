@@ -23,18 +23,6 @@ class LogInfo(BaseModel):
 app = FastAPI()
 results = {}
 
-def process_unpicked_scenarios(unpicked):
-    """
-    Process the unpicked scenarios to remove the corrective scenarios and generate 
-    the scenario headings. 
-    """
-    final_scenarios = pipeline.remove_correctives(unpicked)
-
-    scenario_heading_list = [
-        (pipeline.generate_heading(scenario) + f" (Stakeholder: {stakeholder})", re.sub(r'^\d+\.\s*', '', scenario.strip()).strip()) for (scenario, stakeholder) in final_scenarios
-    ]
-    return scenario_heading_list
-
 def background_task(data: Data, task_id: str, task: Task):
     """
     Runs the pipeline service tasks in the background depending on the task type specified. 
@@ -57,7 +45,7 @@ def background_task(data: Data, task_id: str, task: Task):
             print("Start Generating F1 Scenarios...")
             print(data.stakeholders)
 
-            picked, unpicked = pipeline.generate_scenarios(sys_info, 'f1', data.stakeholders, data.feedback)
+            picked, unpicked = pipeline.generate_scenarios(sys_info, 'f1')
             results[task_id] = picked
             print("F1 Scenarios Generated")
 
@@ -66,7 +54,7 @@ def background_task(data: Data, task_id: str, task: Task):
             print("Start Generating F2 Scenarios...")
             print(data.stakeholders)
 
-            picked, unpicked = pipeline.generate_scenarios(sys_info, 'f2', data.stakeholders, data.feedback)
+            picked, unpicked = pipeline.generate_scenarios(sys_info, 'f2')
             results[task_id] = picked
             print("F2 Scenarios Generated")
 
@@ -75,7 +63,7 @@ def background_task(data: Data, task_id: str, task: Task):
             print("Start Generating F3 Scenarios...")
             print(data.stakeholders)
 
-            picked, unpicked = pipeline.generate_scenarios(sys_info, 'f3', data.stakeholders, data.feedback)
+            picked, unpicked = pipeline.generate_scenarios(sys_info, 'f3')
             results[task_id] = picked
             print("F3 Scenarios Generated")
 
@@ -102,6 +90,19 @@ async def get_result(task_id: str):
     """
     result = results.get(task_id, "Task not completed or does not exist")
     return {"task_id": task_id, "result": result}
+
+def process_unpicked_scenarios(unpicked):
+    """
+    Process the unpicked scenarios without
+    the scenario headings.
+    """
+    empty_header = ""
+    scenario_heading_list = [
+        (empty_header,
+         re.sub(r'^\d+\.\s*', '', scenario.strip()).strip()) for scenario in unpicked
+    ]
+
+    return scenario_heading_list
 
 @app.get("/get-more-scenarios/{task_id}")
 async def get_more_scenarios(task_id: str):
