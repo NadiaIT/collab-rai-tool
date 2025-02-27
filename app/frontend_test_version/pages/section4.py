@@ -10,7 +10,7 @@ st.subheader("Fairness Considerations - Allocation of resources and opportunitie
 
 st.write("In this section, consider potential AI related harms and consequences that may arise from the system and describe your ideas for mitigations")
 
-st.markdown(":closed_book: **Definition:** The <ins>Allocation of resources and opportunities</ins> fairness goal applies to AI systems that generate outputs that directly affect the allocation of resources or opportunities relating to finance, education, employment, healthcare, housing, insurance, or social welfare.", unsafe_allow_html=True)
+st.markdown(":closed_book: **Definition:** The <b>Allocation of resources and opportunities</b> fairness goal applies to AI systems that generate outputs that directly affect the allocation of resources or opportunities relating to finance, education, employment, healthcare, housing, insurance, or social welfare.", unsafe_allow_html=True)
 
 st.write("#### Potential Harms")
 

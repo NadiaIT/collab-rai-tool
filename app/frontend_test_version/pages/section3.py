@@ -10,7 +10,7 @@ st.subheader("Fairness Considerations - Quality of service")
 
 st.write("In this section, consider potential AI related harms and consequences that may arise from the system and describe your ideas for mitigations")
 
-st.markdown(":closed_book: **Definition:** The <ins>Quality of Service</ins> fairness goal applies to AI systems when system users or people impacted by the system with different demographic characteristics might experience differences in quality of service that can be remedied by building the system differently.", unsafe_allow_html=True)
+st.markdown(":closed_book: **Definition:** The <b>Quality of Service</b> fairness goal applies to AI systems when system users or people impacted by the system with different demographic characteristics might experience differences in quality of service that can be remedied by building the system differently.", unsafe_allow_html=True)
 
 st.write("#### Potential Harms")
 

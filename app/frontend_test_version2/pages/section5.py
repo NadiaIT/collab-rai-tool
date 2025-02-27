@@ -10,7 +10,7 @@ st.subheader("Fairness Considerations - Minimization of stereotyping, demeaning,
 
 st.write("In this section, consider potential AI related harms and consequences that may arise from the system and describe your ideas for mitigations")
 
-st.markdown(":closed_book: **Definition:** The <ins>Minimization of stereotyping, demeaning, and erasing outputs</ins> fairness goal applies to AI systems when system outputs include descriptions, depictions, or other representations of people, cultures, or society.", unsafe_allow_html=True)
+st.markdown(":closed_book: **Definition:** The <b>Minimization of stereotyping, demeaning, and erasing outputs</b> fairness goal applies to AI systems when system outputs include descriptions, depictions, or other representations of people, cultures, or society.", unsafe_allow_html=True)
 
 st.write("#### Potential Harms")
 
