@@ -1,7 +1,8 @@
 import requests
 from enum import Enum
 import os, time
-
+import logging
+from datetime import datetime
 
 class Task(Enum):
     DIRECT_SH = 1
@@ -13,7 +14,7 @@ class Task(Enum):
 
 
 backend_url = os.getenv('BACKEND_URL', "http://0.0.0.0:8502")
-
+log_file_name = "results.log"
 
 def format_scenario_result(scenario, i):
     return f"""
@@ -183,3 +184,20 @@ def display_buttons(st, f_enum, sys_info, all_stakeholders):
                 print(f"sending regenerate request for f{f_enum - 2} with feedback: {feedback}")
                 wait_response(st, f_enum)
                 st.rerun()
+
+def set_log():
+    logger = logging.getLogger()
+    if logger.hasHandlers():
+        logger.handlers.clear()
+    date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    global log_file_name
+    log_file_name = "results_" + date_time + ".log"
+    logging.basicConfig(
+        level=logging.INFO,
+        format='%(asctime)s - %(levelname)s - %(message)s',
+        filename=log_file_name,
+        filemode='a'
+    )
+
+def get_log_file():
+    return log_file_name

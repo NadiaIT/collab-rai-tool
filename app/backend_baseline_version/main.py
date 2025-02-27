@@ -10,6 +10,7 @@ helpers_dir = os.path.join(app_dir, 'helpers')
 sys.path.append(helpers_dir)
 from helper import Task
 from fastapi.responses import HTMLResponse
+import helper
 
 class Data(BaseModel):
     sys_info: str
@@ -123,7 +124,8 @@ def logs():
     html_content = "<html><body><pre>"
     html_content+= "<h1>Logs</h1>"
     html_content+= "<h4>Note: The logs are displayed in reverse line order</h4>"
-    with open('results.log', 'r') as file:
+    log_file = helper.get_log_file()
+    with open(log_file, 'r') as file:
         lines = file.readlines()
         for line in reversed(lines):
             html_content += f"{line.strip()}<br>"
@@ -140,6 +142,7 @@ def start_study(version: int):
     elif version == 2: v = "F3 section, then F2 section"
     else: v = "version unknown"
     print(f"Starting new user study - {v}")
+    helper.set_log()
     pipeline.log_helper(f"### Starting new user study - {v}\n")
 
 @app.post("/send-log/")

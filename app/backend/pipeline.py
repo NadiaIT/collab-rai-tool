@@ -14,6 +14,8 @@ sys.path.append(helpers_dir)
 import rai_guide
 from cred import KEY 
 import requests
+import helper
+
 
 gpt3 = "gpt-4o-mini"
 gpt4 = "gpt-4o"
@@ -24,12 +26,7 @@ prompt = [ {"role": "system", "content": "You are an advanced AI Language Model 
 
 model = SentenceTransformer("mixedbread-ai/mxbai-embed-large-v1")
 
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    filename='results.log',
-    filemode='a'
-)
+helper.set_log()
 
 # Predefined fairness goals and potential harms
 fariness_goals = {
