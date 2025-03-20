@@ -33,7 +33,7 @@ if all_stakeholders != [] and f'{f_enum}_task_status' not in st.session_state:
     helper.send_req(st, sys_info, f_enum, all_stakeholders)
     print("sending request for f2")
 
-f2_brainstorm = st.button("Help me brainstorm scenarios concerning Allocation of resources and opportunities", use_container_width=True, type='primary')
+f2_brainstorm = st.button("Click me for scenarios concerning Allocation of resources and opportunities", use_container_width=False, type='primary')
 
 if f'f2_clicked' in st.session_state and f'{f_enum}_result' in st.session_state:
     with st.container(border=True):
