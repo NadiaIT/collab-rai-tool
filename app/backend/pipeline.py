@@ -411,14 +411,23 @@ def generate_scenarios(sys_info, goal, given_stakeholders=None, feedback=None):
     logging.critical(sys_info)
 
     # Step 1: Generate Stakeholders
+    # start = time.time()
+    # if given_stakeholders:
+    #     logging.info(given_stakeholders)
+    #     stakeholders = given_stakeholders
+    # else:
+    #     stakeholders = stakeholder_list_helper(get_stakeholders(sys_info))
+    # log_helper("Stakeholder Generated", start)
+    # logging.info(stakeholders)
+
     start = time.time()
-    if given_stakeholders: 
-        logging.info(given_stakeholders)
-        stakeholders = given_stakeholders
-    else:
-        stakeholders = stakeholder_list_helper(get_stakeholders(sys_info))
+    stakeholders = stakeholder_list_helper(get_stakeholders(sys_info))
     log_helper("Stakeholder Generated", start)
     logging.info(stakeholders)
+    if given_stakeholders:
+        stakeholders = stakeholders + given_stakeholders
+        log_helper("Stakeholder Merged", start)
+        logging.info(stakeholders)
     
     # Step 2: Generate Initial Scenarios - (a) Consider demographic groups & (b) Use the first response as counterexample for surprising
     start = time.time()

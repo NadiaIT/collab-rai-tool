@@ -26,34 +26,34 @@ def stakeholder_section(st, sys_info, is_direct):
     else:
         st.markdown(f":closed_book: **Definition**: {rai_guide.indirect_stakeholder_def}",unsafe_allow_html=True)
 
-    stakeholder_button = st.button(f"Help me brainstorm potential {sh_type} stakeholders",use_container_width=True, type='primary')
+    #stakeholder_button = st.button(f"Help me brainstorm potential {sh_type} stakeholders",use_container_width=True, type='primary')
 
-    if f'{sh_enum}_clicked' in st.session_state and f'{sh_enum}_result' in st.session_state:
-        with st.container(border=True):
-            st.write(st.session_state[f'{sh_enum}_result'])
+    #if f'{sh_enum}_clicked' in st.session_state and f'{sh_enum}_result' in st.session_state:
+    #    with st.container(border=True):
+    #        st.write(st.session_state[f'{sh_enum}_result'])
 
-    if stakeholder_button:
-        if sys_info != '':
-            st.session_state[f'{sh_enum}_clicked'] = True
-            if f'{sh_enum}_task_status' in st.session_state:
-                if st.session_state[f'{sh_enum}_task_status'] == 'Running':
-                    with st.spinner('Generating Stakeholders...'):
-                        while True:
-                            result = helper.poll_task_status(st, st.session_state[f'{sh_enum}_task_id'], sh_enum)
-                            if result:
-                                result = result.replace("Direct Obvious Stakeholders", "Direct Stakeholders")\
-                                      .replace("Direct Surprising Stakeholders", "Other Direct Stakeholders")\
-                                      .replace("Indirect Obvious Stakeholders", "Indirect Stakeholders")\
-                                      .replace("Indirect Surprising Stakeholders", "Other Indirect Stakeholders")
-                                result = result + "\n\n:red[Note: This does not intend to be a comprehensive list of stakeholders and should be used for brainstorming purposes only. We cannot guarantee the accuracy and completeness of the information provided. Please think beyond the provided list of stakeholders.]"
-                                with st.container(border=True):
-                                    st.markdown(result, unsafe_allow_html=True)
-                                st.session_state[f"{sh_enum}_result"] = result
-                                break
-                            else:
-                                time.sleep(5)
-        else:
-            st.write("Please fill in an user story first")
+    #if stakeholder_button:
+    #    if sys_info != '':
+    #        st.session_state[f'{sh_enum}_clicked'] = True
+    #        if f'{sh_enum}_task_status' in st.session_state:
+    #            if st.session_state[f'{sh_enum}_task_status'] == 'Running':
+    #                with st.spinner('Generating Stakeholders...'):
+    #                    while True:
+    #                        result = helper.poll_task_status(st, st.session_state[f'{sh_enum}_task_id'], sh_enum)
+    #                        if result:
+    #                            result = result.replace("Direct Obvious Stakeholders", "Direct Stakeholders")\
+    #                                  .replace("Direct Surprising Stakeholders", "Other Direct Stakeholders")\
+    #                                  .replace("Indirect Obvious Stakeholders", "Indirect Stakeholders")\
+    #                                  .replace("Indirect Surprising Stakeholders", "Other Indirect Stakeholders")
+    #                            result = result + "\n\n:red[Note: This does not intend to be a comprehensive list of stakeholders and should be used for brainstorming purposes only. We cannot guarantee the accuracy and completeness of the information provided. Please think beyond the provided list of stakeholders.]"
+    #                            with st.container(border=True):
+    #                                st.markdown(result, unsafe_allow_html=True)
+    #                            st.session_state[f"{sh_enum}_result"] = result
+    #                            break
+    #                        else:
+    #                            time.sleep(5)
+    #    else:
+    #        st.write("Please fill in an user story first")
 
     def update_df():
         updates = st.session_state[f'{sh_type}_stakeholders_changes']
