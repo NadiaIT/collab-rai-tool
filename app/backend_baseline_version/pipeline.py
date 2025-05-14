@@ -158,6 +158,12 @@ def get_initial_scenarios(goal, sys_info):
         scenario = scenario.replace("SCENARIO:", "")
         scenarios_to_process.append(scenario)
 
+    # In case the scenario parse did not work
+    if len(scenarios_to_process) == 0:
+        logging.warn("Could not process scenario, retrying")
+        for scenario in re.split(r'\D{0,3}\d+\. ', rsp):
+            scenarios_to_process.append(scenario)
+
     return scenarios_to_process
 
 def duration(diff):
@@ -176,6 +182,8 @@ def stakeholder_list_helper(stakeholders):
 def random_pick_scenarios(scenarios):
 
     logging.info("======== Picking Random Scenarios ... ========")
+    if len(scenarios) == 0:
+        return scenarios, scenarios
     index = random.randint(0, len(scenarios) - 1)
     s1 = scenarios.pop(index)
     index = random.randint(0, len(scenarios) - 1)
