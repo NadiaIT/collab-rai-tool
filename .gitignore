@@ -9,3 +9,5 @@ logs
 *.ipynb
 .vscode
 poetry.lock
+mlruns
+analysis/data
